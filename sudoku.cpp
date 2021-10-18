@@ -224,15 +224,16 @@ In the case that a solution does not exist the return value should be false
 and board should contain the original board */
 bool solve_board(char board[9][9])
 {
-  /* Start at first cell (going from left to right, then up to down)
-  Start filling from number 1, if there is any conflict increase the number */
+  /* Use recursive function fill_empty_cells to determine if there is a solution */
   return fill_empty_cells(0, 0, board);
 }
 
 bool fill_empty_cells(int row, int col, char board[9][9])
 {
+  // Translate current position to "move"
   char move[2];
 
+  /* Start at first cell (going from left to right, then up to down) */
   while (row<9 && isdigit(board[row][col])) {
     col ++;
     if (col == 9) {
@@ -241,14 +242,14 @@ bool fill_empty_cells(int row, int col, char board[9][9])
     }
   }
 
-  // Sudoku has been resolved
+  // Case: row == 9: Sudoku has been resolved
   if (is_complete(board)) return true;
 
-  /* Reached a blank cell:
+  /* Case: reached a blank cell:
     - need to try digits from 1-9 */
   move[0] = row + 65;
   move[1] = col + 49; 
-  for (int digit=1; digit <= 9; digit++) {
+  for (char digit='1'; digit <= '9'; digit++) {
     if (make_move(move, digit, board) && fill_empty_cells(row, col, board)) return true;
   }
 
