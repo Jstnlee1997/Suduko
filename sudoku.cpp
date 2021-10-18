@@ -118,3 +118,30 @@ bool make_move(const char move[2], const char digit, char board[9][9])
   board[row_index][col_index] = digit;
   return true;
 }
+
+/* Boolean function save board(filename, board) which outputs the two-dimensional character array board 
+to a file with name filename. The return value should be true if the file was successfully written, and
+false otherwise. */
+bool save_board(const char* filename, const char board[9][9])
+{
+  cout << "Loading Sudoku board from file '" << filename << "'... ";
+
+  ofstream out;
+  ofstream test_out;
+  out.open(filename);
+
+  for (int row=0; row<9; row++) {
+    for (int col=0; col<9; col++) {
+      out << board[row][col];
+    }
+    out << endl;
+  }
+
+  out.close();
+
+  /* NEED TO INSERT CODE HERE to check if output file has any failures */
+  test_out.open(filename);
+  if (test_out.fail()) return false;
+
+  return true;
+}
