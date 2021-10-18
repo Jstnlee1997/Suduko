@@ -105,15 +105,9 @@ bool make_move(const char move[2], const char digit, char board[9][9])
   // Invalid digit
   if (digit < 49 || digit > 57) return false;
 
-  // Invalid move as there is the same digit in the same row
-  if (is_present_in_row(row_index, digit, board)) return false;
+  // Invalid move as there is the same digit in the same row or column or 3x3 square
+  if (is_present_in_row(row_index, digit, board) || is_present_in_column(col_index, digit, board) || is_present_in_square(row_index, col_index, digit, board)) return false;
 
-  // Invalid move as there is the same digit in the same column
-  if (is_present_in_column(col_index, digit, board)) return false;
-
-  // Invalid move as there is the same digit in the same 3x3 square
-  if (is_present_in_square(row_index, col_index, digit, board)) return false;
-  
   // Valid move: update board with digit and return true
   board[row_index][col_index] = digit;
   return true;
@@ -230,7 +224,38 @@ In the case that a solution does not exist the return value should be false
 and board should contain the original board */
 bool solve_board(char board[9][9])
 {
+  /* Start at first cell (going from left to right, then up to down)
+  Start filling from number 1, if there is any conflict increase the number */
+  return fill_empty_cells(0, 0, board);
+}
 
+bool fill_empty_cells(int row, int col, char board[9][9])
+{
+  char move[2];
+
+  while (row<9 && isdigit(board[row][col])) {
+    col ++;
+    if (col == 9) {
+      row ++;
+      col = 0;
+    }
+  }
+
+  // Sudoku has been resolved
+  if (is_complete(board)) return true;
+
+  /* Reached a blank cell:
+    - need to try digits from 1-9 */
+  move[0] = row + 65;
+  move[1] = col + 49; 
+  for (int digit=1; digit <= 9; digit++) {
+    if (make_move(move, digit, board) && fill_empty_cells(row, col, board)) return true;
+  }
+
+  /* Failure to resolve:
+    - reset to empty character ' ' */
+  board[row][col] = ' ';
+  return false;
 }
 
 /* After adding a digit, Boolean function fill_ninth_digit will check 
@@ -239,7 +264,7 @@ If yes it will automatically fill up the last empty space.
 
 This function is to speed up performance.
  */
-bool fill_ninth_digit(int row_index, int col_index, char board[9][9])
-{
+// bool fill_ninth_digit(int row_index, int col_index, char board[9][9])
+// {
 
-}
+// }
