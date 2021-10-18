@@ -72,3 +72,15 @@ void display_board(const char board[9][9]) {
 }
 
 /* add your functions here */
+
+/* Boolean function is_complete(board) which takes a 9 ×9 array of characters representing a Sudoku
+board and returns true if all board positions are occupied by digits, and false otherwise. */
+bool is_complete(const char board[9][9])
+{
+  for (int row=0; row<9; row++) {
+    for (int col=0; col<9; col++) {
+      if (!isdigit(board[row][col])) return false;
+    }
+  }
+  return true;
+}
