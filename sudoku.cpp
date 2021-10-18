@@ -85,7 +85,7 @@ bool is_complete(const char board[9][9])
   return true;
 }
 
-/* Boolean function make move(position, digit, board) which attempts to place a digit onto a Sudoku board at a given position. 
+/* Boolean function make_move(position, digit, board) which attempts to place a digit onto a Sudoku board at a given position. 
 Here position is a two-character string denoting row (A to I) and column (1 to 9) board coordinates (e.g. “I8” ), 
 digit is a character denoting the digit to be placed (from ’1’ to ’9’), 
 and board is a two-dimensional character array. 
@@ -106,20 +106,37 @@ bool make_move(const char move[2], const char digit, char board[9][9])
   if (digit < 49 || digit > 57) return false;
 
   // Invalid move as there is the same digit in the same row
-  for (int col=0; col<9; col++) {
-    if (board[row_index][col] == digit) return false;
-  }
-  // Invalid move as there is the same digit in the same column
-  for (int row=0; row<9; row++) {
-    if (board[row][col_index] == digit) return false;
-  }
+  if (is_present_in_row(row_index, digit, board)) return false;
 
+  // Invalid move as there is the same digit in the same column
+  if (is_present_in_column(col_index, digit, board)) return false;
+  
   // Valid move: update board with digit and return true
   board[row_index][col_index] = digit;
   return true;
 }
 
-/* Boolean function save board(filename, board) which outputs the two-dimensional character array board 
+/* Function to check if digit is present in the same row where the user wants to add a digit to. 
+If digit is present: return true */
+bool is_present_in_row(int row_index, const char digit, char board[9][9])
+{
+  for (int col=0; col<9; col++) {
+    if (board[row_index][col] == digit) return true;
+  }
+  return false;
+}
+
+/* Function to check if digit is present in the same column where the user wants to add a digit to. 
+If digit is present: return true */
+bool is_present_in_column(int col_index, const char digit, char board[9][9])
+{
+  for (int row=0; row<9; row++) {
+    if (board[row][col_index] == digit) return true;
+  }
+  return false;
+}
+
+/* Boolean function save_board(filename, board) which outputs the two-dimensional character array board 
 to a file with name filename. The return value should be true if the file was successfully written, and
 false otherwise. */
 bool save_board(const char* filename, const char board[9][9])
@@ -145,3 +162,9 @@ bool save_board(const char* filename, const char board[9][9])
 
   return true;
 }
+
+/* Boolean function solve_board(board) which attempts to solve the Sudoku puzzle in input/output parameter board. 
+The return value of the function should be true if a solution is found, in which case board should contain the solution found. 
+In the case that a solution does not exist the return value should be false
+and board should contain the original board */
+bool solve_board(char board[9][9]);
