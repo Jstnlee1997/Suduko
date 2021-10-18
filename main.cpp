@@ -35,19 +35,41 @@ int main() {
   }
   cout << "complete.\n\n";
 
-  // cout << "=================== Question 2 ===================\n\n";
+  cout << "=================== Question 2 ===================\n\n";
 
-  // load_board("easy.dat", board);
+  load_board("easy.dat", board);
 
-  // // Should be OK
-  // cout << "Putting '1' into I8 is ";
-  // if (!make_move("I8", '1', board)) {
-  //   cout << "NOT ";
-  // }
-  // cout << "a valid move. The board is:\n";
-  // display_board(board);
+  // Should be OK
+  cout << "Putting '1' into I8 is ";
+  if (!make_move("I8", '1', board)) {
+    cout << "NOT ";
+  }
+  cout << "a valid move. The board is:\n";
+  display_board(board);
 
-  // // write more tests
+  // Invalid position
+  cout << "Putting '1' into J8 is ";
+  if (!make_move("J8", '1', board)) {
+    cout << "NOT ";
+  }
+  cout << "a valid move. The board is:\n";
+  display_board(board);
+
+  // Invalid digit
+  cout << "Putting '1' into I9 is ";
+  if (!make_move("I9", '1', board)) {
+    cout << "NOT ";
+  }
+  cout << "a valid move. The board is:\n";
+  display_board(board);
+
+  // Should be OK
+  cout << "Putting '2' into C7 is ";
+  if (!make_move("C7", '2', board)) {
+    cout << "NOT ";
+  }
+  cout << "a valid move. The board is:\n";
+  display_board(board);
 
   // cout << "=================== Question 3 ===================\n\n";
 

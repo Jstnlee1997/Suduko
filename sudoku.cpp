@@ -73,8 +73,8 @@ void display_board(const char board[9][9]) {
 
 /* add your functions here */
 
-/* Boolean function is_complete(board) which takes a 9 ×9 array of characters representing a Sudoku
-board and returns true if all board positions are occupied by digits, and false otherwise. */
+/* Boolean function is_complete(board) which takes a 9 ×9 array of characters representing a Sudoku board 
+and returns true if all board positions are occupied by digits, and false otherwise. */
 bool is_complete(const char board[9][9])
 {
   for (int row=0; row<9; row++) {
@@ -82,5 +82,39 @@ bool is_complete(const char board[9][9])
       if (!isdigit(board[row][col])) return false;
     }
   }
+  return true;
+}
+
+/* Boolean function make move(position, digit, board) which attempts to place a digit onto a Sudoku board at a given position. 
+Here position is a two-character string denoting row (A to I) and column (1 to 9) board coordinates (e.g. “I8” ), 
+digit is a character denoting the digit to be placed (from ’1’ to ’9’), 
+and board is a two-dimensional character array. 
+
+If position is invalid (e.g. because the coordinates are out of range), 
+or the placing of the digit at position is invalid (e.g. because it would result in two copies of the same digit in the same row), 
+then the return value of the function should be false, and board should be unaltered. 
+Otherwise, the return value of the function should be true and board should be updated to
+reflect the placing of digit at position.*/
+bool make_move(const char move[2], const char digit, char board[9][9])
+{
+  int row_index = (move[0]-65), col_index = (move[1]-49);
+
+  // Invalid position
+  if (move[0] < 65 || move[0] > 73 || move[1] < 49 || move[1] > 57) return false;
+
+  // Invalid digit
+  if (digit < 49 || digit > 57) return false;
+
+  // Invalid move as there is the same digit in the same row
+  for (int col=0; col<9; col++) {
+    if (board[row_index][col] == digit) return false;
+  }
+  // Invalid move as there is the same digit in the same column
+  for (int row=0; row<9; row++) {
+    if (board[row][col_index] == digit) return false;
+  }
+
+  // Valid move: update board with digit and return true
+  board[row_index][col_index] = digit;
   return true;
 }
