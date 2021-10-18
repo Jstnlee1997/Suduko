@@ -55,9 +55,17 @@ int main() {
   cout << "a valid move. The board is:\n";
   display_board(board);
 
-  // Invalid digit
+  // Invalid digit (same digit in same row)
   cout << "Putting '1' into I9 is ";
   if (!make_move("I9", '1', board)) {
+    cout << "NOT ";
+  }
+  cout << "a valid move. The board is:\n";
+  display_board(board);
+
+  // Invalid digit (same digit in same 3x3 square)
+  cout << "Putting '3' into B8 is ";
+  if (!make_move("B8", '3', board)) {
     cout << "NOT ";
   }
   cout << "a valid move. The board is:\n";

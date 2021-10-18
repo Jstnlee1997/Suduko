@@ -110,6 +110,9 @@ bool make_move(const char move[2], const char digit, char board[9][9])
 
   // Invalid move as there is the same digit in the same column
   if (is_present_in_column(col_index, digit, board)) return false;
+
+  // Invalid move as there is the same digit in the same 3x3 square
+  if (is_present_in_square(row_index, col_index, digit, board)) return false;
   
   // Valid move: update board with digit and return true
   board[row_index][col_index] = digit;
@@ -132,6 +135,64 @@ bool is_present_in_column(int col_index, const char digit, char board[9][9])
 {
   for (int row=0; row<9; row++) {
     if (board[row][col_index] == digit) return true;
+  }
+  return false;
+}
+
+/* Function to check if digit is present in the same 3x3 square where the user wants to add a digit to.
+If digit is present: return true */
+bool is_present_in_square(int row_index, int col_index, const char digit, char board[9][9])
+{
+  if (row_index < 3) {
+    if (col_index < 3) {
+      // Top left 3x3 square
+      return check_square(3, 3, digit, board);
+    }
+    if (col_index < 6) {
+      // Top middle 3x3 square
+      return check_square(3, 6, digit, board);
+    }
+    if (col_index < 9) {
+      // Top right 3x3 square
+      return check_square(3, 9, digit, board);
+    }
+  }
+  if (row_index < 6) {
+    if (col_index < 3) {
+      // Middle left 3x3 square
+      return check_square(6, 3, digit, board);
+    }
+    if (col_index < 6) {
+      // Middle middle 3x3 square
+      return check_square(6, 6, digit, board);
+    }
+    if (col_index < 9) {
+      // Middle right 3x3 square
+      return check_square(6, 9, digit, board);
+    }
+  }  
+  if (col_index < 3) {
+    // Bottom left 3x3 square
+    return check_square(9, 3, digit, board);
+  }
+  if (col_index < 6) {
+    // Bottom middle 3x3 square
+    return check_square(9, 6, digit, board);
+  }
+  if (col_index < 9) {
+    // Bottom right 3x3 square
+    return check_square(9, 9, digit, board);
+  }
+  return false;
+}
+
+/* Helper function for Boolean is_present_in_square, to determine for presence of digit within same 3x3 square */
+bool check_square(int row_square, int col_square, const char digit, char board[9][9])
+{
+  for (int row=(row_square-3); row<row_square; row++) {
+    for (int col=(col_square-3); col<col_square; col++) {
+      if (board[row][col] == digit) return true;
+    }
   }
   return false;
 }
@@ -167,4 +228,18 @@ bool save_board(const char* filename, const char board[9][9])
 The return value of the function should be true if a solution is found, in which case board should contain the solution found. 
 In the case that a solution does not exist the return value should be false
 and board should contain the original board */
-bool solve_board(char board[9][9]);
+bool solve_board(char board[9][9])
+{
+
+}
+
+/* After adding a digit, Boolean function fill_ninth_digit will check 
+if there is a row or column that has ended up with 8 numbers.
+If yes it will automatically fill up the last empty space.
+
+This function is to speed up performance.
+ */
+bool fill_ninth_digit(int row_index, int col_index, char board[9][9])
+{
+
+}
