@@ -136,7 +136,7 @@ int main() {
 
   // write more tests
 
-  double mystery1_duration, mystery2_duration, mystery3_duration;
+  double mystery1_duration=0, mystery2_duration=0, mystery3_duration=0;
 
   load_board("mystery1.dat", board);
   auto begin1 = high_resolution_clock::now();
@@ -176,6 +176,8 @@ int main() {
     cout << "A solution cannot be found for mystery3.\n";
   }
   cout << '\n';
+
+  determine_mystery_results(mystery1_duration, mystery2_duration, mystery3_duration);
 
   return 0;
 }

@@ -338,4 +338,43 @@ If yes it will automatically fill up the last empty space.
 //   }
 // }
 
-/*  */
+/* Function to determine results of Mystery boards */
+void determine_mystery_results(double mystery1, double mystery2, double mystery3)
+{
+  int result;
+  // Mystery3 was impossible to solve
+  if (mystery1 && mystery2) {
+    if (mystery1 > mystery2) {
+      result = mystery1/mystery2;
+      cout << "Mystery2 was " << result << " times faster to solve than Mystery1!" << endl;
+    } 
+    else {
+      result = mystery2/mystery1;
+      cout << "Mystery1 was " << result << " times faster to solve than Mystery2!" << endl;
+    }
+  }
+
+  // Mystery2 was impossible to solve
+  if (mystery1 && mystery3) {
+    if (mystery1 > mystery3) {
+      result = mystery1/mystery3;
+      cout << "Mystery3 was " << result << " times faster to solve than Mystery1!" << endl;
+    } 
+    else {
+      result = mystery3/mystery1;
+      cout << "Mystery1 was " << result << " times faster to solve than Mystery3!" << endl;
+    }
+  }
+
+  // Mystery1 was impossible to solve
+  if (mystery2 && mystery3) {
+    if (mystery2 > mystery3) {
+      result = mystery2/mystery3;
+      cout << "Mystery3 was " << result << " times faster to solve than Mystery2!" << endl;
+    } 
+    else {
+      result = mystery3/mystery2;
+      cout << "Mystery2 was " << result << " times faster to solve than Mystery3!" << endl;
+    }
+  }
+}
