@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cstdio>
+#include <chrono>
 #include "sudoku.h"
 
 using namespace std;
+using namespace std::chrono;
 
 int main() {
 
@@ -111,9 +113,69 @@ int main() {
 
   // // write more tests
 
-  // cout << "=================== Question 5 ===================\n\n";
+  // Test for failures
+  load_board("easy-fail.dat", board);
+  if (solve_board(board)) {
+    cout << "The 'easy-fail' board has a solution:\n";
+    display_board(board);
+  } else {
+    cout << "A solution cannot be found.\n";
+  }
+  cout << '\n';
 
-  // // write more tests
+  load_board("medium-fail.dat", board);
+  if (solve_board(board)) {
+    cout << "The 'medium-fail' board has a solution:\n";
+    display_board(board);
+  } else {
+    cout << "A solution cannot be found.\n";
+  }
+  cout << '\n';
+
+  cout << "=================== Question 5 ===================\n\n";
+
+  // write more tests
+
+  double mystery1_duration, mystery2_duration, mystery3_duration;
+
+  load_board("mystery1.dat", board);
+  auto begin1 = high_resolution_clock::now();
+  if (solve_board(board)) {
+    auto end1 = high_resolution_clock::now();
+    mystery1_duration = duration_cast<microseconds>(end1 - begin1).count() /1000000.0;
+    cout << "The 'mystery1' board has a solution:\n";
+    cout << "The time taken was: " << mystery1_duration << "sec" << endl; 
+    display_board(board);
+  } else {
+    cout << "A solution cannot be found for mystery1.\n";
+  }
+  cout << '\n';
+
+  auto begin2 = high_resolution_clock::now();
+  load_board("mystery2.dat", board);
+  if (solve_board(board)) {
+    auto end2 = high_resolution_clock::now();
+    mystery2_duration = duration_cast<microseconds>(end2 - begin2).count() /1000000.0;
+    cout << "The 'mystery2 board has a solution:\n";
+    cout << "The time taken was: " << mystery2_duration << "sec" << endl; 
+    display_board(board);
+  } else {
+    cout << "A solution cannot be found for mystery2.\n";
+  }
+  cout << '\n';
+
+  auto begin3 = high_resolution_clock::now();
+  load_board("mystery3.dat", board);
+  if (solve_board(board)) {
+    auto end3 = high_resolution_clock::now();
+    mystery3_duration = duration_cast<microseconds>(end3 - begin3).count() /1000000.0;
+    cout << "The 'mystery3' board has a solution:\n";
+    cout << "The time taken was: " << mystery3_duration << "sec" << endl; 
+    display_board(board);
+  } else {
+    cout << "A solution cannot be found for mystery3.\n";
+  }
+  cout << '\n';
 
   return 0;
 }

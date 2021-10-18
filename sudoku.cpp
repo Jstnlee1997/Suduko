@@ -228,6 +228,10 @@ bool solve_board(char board[9][9])
   return fill_empty_cells(0, 0, board);
 }
 
+/* Boolean function fill_empty_cells which uses a recursive function to fill up each cell of the board recursively.
+It begins from the top left most cell, and tries every digit (1-9) and fills up cells from left to right, then top to down.
+If there are any conflicts, it would go back and resolve the conflicts.
+If it returns false, the board would be untouched. */
 bool fill_empty_cells(int row, int col, char board[9][9])
 {
   // Translate current position to "move"
@@ -263,9 +267,75 @@ bool fill_empty_cells(int row, int col, char board[9][9])
 if there is a row or column that has ended up with 8 numbers.
 If yes it will automatically fill up the last empty space.
 
-This function is to speed up performance.
- */
+// This function is to speed up performance.
+//  */
 // bool fill_ninth_digit(int row_index, int col_index, char board[9][9])
 // {
+//   int empty_col, empty_row, empty_square;
+//   empty_col = empty_row = empty_square = -1;
+//   char move[2];
 
+//   // Check how many empty cells are there in current row
+//   for (int col=0; col<9; col++) {
+//     if (!isdigit(board[row_index][col])) {
+//       if (empty_col != -1) {
+//         // More than 2 empty cells in current row -> reset
+//         empty_col = -1;
+//         break;
+//       }
+//       empty_col = col;
+//     }
+//   }
+//   if (empty_col != -1) {
+//     // Fill up empty_col with missing number
+//     move[0] = row_index + 65;
+//     move[1] = empty_col + 49;
+//     for (char digit = '1'; digit <= '9'; digit++) {
+//       return make_move(move, digit, board);
+//     }
+//   }
+
+//   // Check how many empty cells are there in current column
+//   for (int row=0; row<9; row++) {
+//     if (!isdigit(board[row][col_index])) {
+//       if (empty_row != -1) {
+//         // More than 2 empty cells in current column -> reset
+//         empty_row = -1;
+//         break;
+//       }
+//       empty_row = row;
+//     }
+//   }
+//   if (empty_row != -1) {
+//     // Fill up empty_col with missing number
+//     move[0] = empty_row + 65;
+//     move[1] = col_index + 49;
+//     for (char digit = '1'; digit <= '9'; digit++) {
+//       if (!make_move(move, digit, board)) return false;
+//     }
+//   }
+
+//   // Check how many empty cells are there in current 3x3 square
+//   for (int row=(row_index-row_index%3); row<(row_index-row_index%3)+3; row++) {
+//     for (int col=(col_index-col_index%3); col<(col_index-col_index%3)+3; col++) {
+//       if (!isdigit(board[row][col])) {
+//         if (empty_square != -1) {
+//           // More than 2 empty cells in current square -> reset
+//           empty_square = -1;
+//           break;
+//         }
+//         empty_col = col;
+//         empty_row = row;
+//       }
+//     }
+//   if (empty_square != -1) {
+//     // Fill up empty_col with missing number
+//     move[0] = empty_row + 65;
+//     move[1] = empty_col + 49;
+//     for (char digit = '1'; digit <= '9'; digit++) {
+//       return make_move(move, digit, board);
+//     }
+//   }
 // }
+
+/*  */
