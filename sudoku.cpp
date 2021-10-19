@@ -137,54 +137,8 @@ bool is_present_in_column(int col_index, const char digit, char board[9][9])
 If digit is present: return true */
 bool is_present_in_square(int row_index, int col_index, const char digit, char board[9][9])
 {
-  if (row_index < 3) {
-    if (col_index < 3) {
-      // Top left 3x3 square
-      return check_square(3, 3, digit, board);
-    }
-    if (col_index < 6) {
-      // Top middle 3x3 square
-      return check_square(3, 6, digit, board);
-    }
-    if (col_index < 9) {
-      // Top right 3x3 square
-      return check_square(3, 9, digit, board);
-    }
-  }
-  if (row_index < 6) {
-    if (col_index < 3) {
-      // Middle left 3x3 square
-      return check_square(6, 3, digit, board);
-    }
-    if (col_index < 6) {
-      // Middle middle 3x3 square
-      return check_square(6, 6, digit, board);
-    }
-    if (col_index < 9) {
-      // Middle right 3x3 square
-      return check_square(6, 9, digit, board);
-    }
-  }  
-  if (col_index < 3) {
-    // Bottom left 3x3 square
-    return check_square(9, 3, digit, board);
-  }
-  if (col_index < 6) {
-    // Bottom middle 3x3 square
-    return check_square(9, 6, digit, board);
-  }
-  if (col_index < 9) {
-    // Bottom right 3x3 square
-    return check_square(9, 9, digit, board);
-  }
-  return false;
-}
-
-/* Helper function for Boolean is_present_in_square, to determine for presence of digit within same 3x3 square */
-bool check_square(int row_square, int col_square, const char digit, char board[9][9])
-{
-  for (int row=(row_square-3); row<row_square; row++) {
-    for (int col=(col_square-3); col<col_square; col++) {
+  for (int row = (row_index-row_index%3); row < (row_index-row_index%3)+3; row ++) {
+    for (int col = (col_index-col_index%3); col < (col_index-col_index%3)+3; col ++) {
       if (board[row][col] == digit) return true;
     }
   }
