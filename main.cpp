@@ -37,6 +37,14 @@ int main() {
   }
   cout << "complete.\n\n";
 
+  // Include tests
+  load_board("easy-insert-0.dat", board);
+  cout << "Board is ";
+  if (!is_complete(board)) {
+    cout << "NOT ";
+  }
+  cout << "complete.\n\n";
+
   cout << "=================== Question 2 ===================\n\n";
 
   load_board("easy.dat", board);
