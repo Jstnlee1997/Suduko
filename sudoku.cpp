@@ -73,7 +73,7 @@ void display_board(const char board[9][9]) {
 
 /* add your functions here */
 
-/* Boolean function is_complete(board) which takes a 9 ×9 array of characters representing a Sudoku board 
+/* Boolean function is_complete(board) which takes a 9×9 array of characters representing a Sudoku board 
 and returns true if all board positions are occupied by digits, and false otherwise. */
 bool is_complete(const char board[9][9])
 {
@@ -110,10 +110,14 @@ bool make_move(const char move[2], const char digit, char board[9][9])
 
   // Valid move: update board with digit and return true
   board[row_index][col_index] = digit;
+
+  // Check if there is any ninth digit to fill in within the current row, column, OR 3x3 square
+  fill_ninth_digit(row_index, col_index, board);
+
   return true;
 }
 
-/* Function to check if digit is present in the same row where the user wants to add a digit to. 
+/* Boolean function is_present_in_row to check if digit is present in the same row where the user wants to add a digit to. 
 If digit is present: return true */
 bool is_present_in_row(int row_index, const char digit, char board[9][9])
 {
@@ -123,7 +127,7 @@ bool is_present_in_row(int row_index, const char digit, char board[9][9])
   return false;
 }
 
-/* Function to check if digit is present in the same column where the user wants to add a digit to. 
+/* Boolean function is_present_in_column to check if digit is present in the same column where the user wants to add a digit to. 
 If digit is present: return true */
 bool is_present_in_column(int col_index, const char digit, char board[9][9])
 {
@@ -133,7 +137,7 @@ bool is_present_in_column(int col_index, const char digit, char board[9][9])
   return false;
 }
 
-/* Function to check if digit is present in the same 3x3 square where the user wants to add a digit to.
+/* Boolean function is_present_in_square to check if digit is present in the same 3x3 square where the user wants to add a digit to.
 If digit is present: return true */
 bool is_present_in_square(int row_index, int col_index, const char digit, char board[9][9])
 {
@@ -178,7 +182,8 @@ In the case that a solution does not exist the return value should be false
 and board should contain the original board */
 bool solve_board(char board[9][9])
 {
-  /* Use recursive function fill_empty_cells to determine if there is a solution */
+  /* Use recursive function fill_empty_cells to determine if there is a solution
+  Start from first cell (0,0) */
   return fill_empty_cells(0, 0, board);
 }
 
@@ -192,7 +197,7 @@ bool fill_empty_cells(int row, int col, char board[9][9])
   char move[2];
 
   /* Start at first cell (going from left to right, then up to down) */
-  while (row<9 && isdigit(board[row][col])) {
+  while (row < 9 && isdigit(board[row][col]) && board[row][col] != '0') {
     col ++;
     if (col == 9) {
       row ++;
@@ -211,7 +216,7 @@ bool fill_empty_cells(int row, int col, char board[9][9])
     if (make_move(move, digit, board) && fill_empty_cells(row, col, board)) return true;
   }
 
-  /* Failure to resolve:
+  /* Case: failure to resolve:
     - reset to empty character ' ' */
   board[row][col] = ' ';
   return false;
@@ -221,81 +226,83 @@ bool fill_empty_cells(int row, int col, char board[9][9])
 if there is a row or column that has ended up with 8 numbers.
 If yes it will automatically fill up the last empty space.
 
-// This function is to speed up performance.
-//  */
-// bool fill_ninth_digit(int row_index, int col_index, char board[9][9])
-// {
-//   int empty_col, empty_row, empty_square;
-//   empty_col = empty_row = empty_square = -1;
-//   char move[2];
+This function is to speed up performance.
+ */
+void fill_ninth_digit(int row_index, int col_index, char board[9][9])
+{
+  int empty_col, empty_row, empty_square;
+  empty_col = empty_row = empty_square = -1;
+  char move[2];
 
-//   // Check how many empty cells are there in current row
-//   for (int col=0; col<9; col++) {
-//     if (!isdigit(board[row_index][col])) {
-//       if (empty_col != -1) {
-//         // More than 2 empty cells in current row -> reset
-//         empty_col = -1;
-//         break;
-//       }
-//       empty_col = col;
-//     }
-//   }
-//   if (empty_col != -1) {
-//     // Fill up empty_col with missing number
-//     move[0] = row_index + 65;
-//     move[1] = empty_col + 49;
-//     for (char digit = '1'; digit <= '9'; digit++) {
-//       return make_move(move, digit, board);
-//     }
-//   }
+  // Check how many empty cells are there in current row
+  for (int col=0; col<9; col++) {
+    if (!isdigit(board[row_index][col]) || board[row_index][col] == '0') {
+      if (empty_col != -1) {
+        // More than 2 empty cells in current row -> reset
+        empty_col = -1;
+        break;
+      }
+      empty_col = col;
+    }
+  }
+  // Fill up empty cell within current row with missing number
+  if (empty_col != -1) {
+    move[0] = row_index + 65;
+    move[1] = empty_col + 49;
+    for (char digit = '1'; digit <= '9'; digit++) {
+      if (make_move(move, digit, board)) break;
+    }
+  }
 
-//   // Check how many empty cells are there in current column
-//   for (int row=0; row<9; row++) {
-//     if (!isdigit(board[row][col_index])) {
-//       if (empty_row != -1) {
-//         // More than 2 empty cells in current column -> reset
-//         empty_row = -1;
-//         break;
-//       }
-//       empty_row = row;
-//     }
-//   }
-//   if (empty_row != -1) {
-//     // Fill up empty_col with missing number
-//     move[0] = empty_row + 65;
-//     move[1] = col_index + 49;
-//     for (char digit = '1'; digit <= '9'; digit++) {
-//       if (!make_move(move, digit, board)) return false;
-//     }
-//   }
+  // Check how many empty cells are there in current column
+  for (int row=0; row<9; row++) {
+    if (!isdigit(board[row][col_index]) || board[row][col_index] == '0') {
+      if (empty_row != -1) {
+        // More than 2 empty cells in current column -> reset
+        empty_row = -1;
+        break;
+      }
+      empty_row = row;
+    }
+  }
+  // Fill up empty cell within current column with missing number
+  if (empty_row != -1) {
+    move[0] = empty_row + 65;
+    move[1] = col_index + 49;
+    for (char digit = '1'; digit <= '9'; digit++) {
+      if (make_move(move, digit, board)) break;
+    }
+  }
 
-//   // Check how many empty cells are there in current 3x3 square
-//   for (int row=(row_index-row_index%3); row<(row_index-row_index%3)+3; row++) {
-//     for (int col=(col_index-col_index%3); col<(col_index-col_index%3)+3; col++) {
-//       if (!isdigit(board[row][col])) {
-//         if (empty_square != -1) {
-//           // More than 2 empty cells in current square -> reset
-//           empty_square = -1;
-//           break;
-//         }
-//         empty_col = col;
-//         empty_row = row;
-//       }
-//     }
-//   if (empty_square != -1) {
-//     // Fill up empty_col with missing number
-//     move[0] = empty_row + 65;
-//     move[1] = empty_col + 49;
-//     for (char digit = '1'; digit <= '9'; digit++) {
-//       return make_move(move, digit, board);
-//     }
-//   }
-// }
+  // Check how many empty cells are there in current 3x3 square
+  for (int row=(row_index-row_index%3); row<(row_index-row_index%3)+3; row++) {
+    for (int col=(col_index-col_index%3); col<(col_index-col_index%3)+3; col++) {
+      if (!isdigit(board[row][col]) || board[row][col] == '0') {
+        if (empty_square != -1) {
+          // More than 2 empty cells in current square -> reset
+          empty_square = -1;
+          break;
+        }
+        empty_col = col;
+        empty_row = row;
+      }
+    }
+  }
+  // Fill up empty cell with missing number
+  if (empty_square != -1) {
+    move[0] = empty_row + 65;
+    move[1] = empty_col + 49;
+    for (char digit = '1'; digit <= '9'; digit++) {
+      if (make_move(move, digit, board)) break;
+    }
+  }
+}
 
 /* Function to determine results of Mystery boards */
 void determine_mystery_results(double mystery1, double mystery2, double mystery3)
 {
   int result;
+
   // Mystery3 was impossible to solve
   if (mystery1 && mystery2) {
     if (mystery1 > mystery2) {
