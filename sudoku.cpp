@@ -111,9 +111,6 @@ bool make_move(const char move[2], const char digit, char board[9][9])
   // Valid move: update board with digit and return true
   board[row_index][col_index] = digit;
 
-  // Check if there is any ninth digit to fill in within the current row, column, OR 3x3 square
-  fill_ninth_digit(row_index, col_index, board);
-
   return true;
 }
 
@@ -220,82 +217,6 @@ bool fill_empty_cells(int row, int col, char board[9][9])
     - reset to empty character ' ' */
   board[row][col] = ' ';
   return false;
-}
-
-/* After adding a digit, Boolean function fill_ninth_digit will check 
-if there is a row or column that has ended up with 8 numbers.
-If yes it will automatically fill up the last empty space.
-
-This function is to speed up performance.
- */
-void fill_ninth_digit(int row_index, int col_index, char board[9][9])
-{
-  int empty_col, empty_row, empty_square;
-  empty_col = empty_row = empty_square = -1;
-  char move[2];
-
-  // Check how many empty cells are there in current row
-  for (int col=0; col<9; col++) {
-    if (!isdigit(board[row_index][col]) || board[row_index][col] == '0') {
-      if (empty_col != -1) {
-        // More than 2 empty cells in current row -> reset
-        empty_col = -1;
-        break;
-      }
-      empty_col = col;
-    }
-  }
-  // Fill up empty cell within current row with missing number
-  if (empty_col != -1) {
-    move[0] = row_index + 65;
-    move[1] = empty_col + 49;
-    for (char digit = '1'; digit <= '9'; digit++) {
-      if (make_move(move, digit, board)) break;
-    }
-  }
-
-  // Check how many empty cells are there in current column
-  for (int row=0; row<9; row++) {
-    if (!isdigit(board[row][col_index]) || board[row][col_index] == '0') {
-      if (empty_row != -1) {
-        // More than 2 empty cells in current column -> reset
-        empty_row = -1;
-        break;
-      }
-      empty_row = row;
-    }
-  }
-  // Fill up empty cell within current column with missing number
-  if (empty_row != -1) {
-    move[0] = empty_row + 65;
-    move[1] = col_index + 49;
-    for (char digit = '1'; digit <= '9'; digit++) {
-      if (make_move(move, digit, board)) break;
-    }
-  }
-
-  // Check how many empty cells are there in current 3x3 square
-  for (int row=(row_index-row_index%3); row<(row_index-row_index%3)+3; row++) {
-    for (int col=(col_index-col_index%3); col<(col_index-col_index%3)+3; col++) {
-      if (!isdigit(board[row][col]) || board[row][col] == '0') {
-        if (empty_square != -1) {
-          // More than 2 empty cells in current square -> reset
-          empty_square = -1;
-          break;
-        }
-        empty_col = col;
-        empty_row = row;
-      }
-    }
-  }
-  // Fill up empty cell with missing number
-  if (empty_square != -1) {
-    move[0] = empty_row + 65;
-    move[1] = empty_col + 49;
-    for (char digit = '1'; digit <= '9'; digit++) {
-      if (make_move(move, digit, board)) break;
-    }
-  }
 }
 
 /* Function to determine results of Mystery boards */
