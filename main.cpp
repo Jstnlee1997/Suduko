@@ -21,7 +21,7 @@ int main() {
   display_board(board);
   cout << "Done!\n\n";
 
-  cout << "=================== Question 1 ===================\n\n";
+  cout << "=============== Question 1: Loading of Sudoku Board ===============\n\n";
 
   load_board("easy.dat", board);
   cout << "Board is ";
@@ -45,7 +45,7 @@ int main() {
   }
   cout << "complete.\n\n";
 
-  cout << "=================== Question 2 ===================\n\n";
+  cout << "================ Question 2: Check validty of move ================\n\n";
 
   load_board("easy.dat", board);
 
@@ -89,7 +89,7 @@ int main() {
   cout << "a valid move. The board is:\n";
   display_board(board);
 
-  cout << "=================== Question 3 ===================\n\n";
+  cout << "=============== Question 3: Make a copy of the board ===============\n\n";
 
   load_board("easy.dat", board);
   if (save_board("easy-copy.dat", board)) {
@@ -99,7 +99,7 @@ int main() {
   }
   cout << '\n';
 
-  cout << "=================== Question 4 ===================\n\n";
+  cout << "=================== Question 4: Solve the board ===================\n\n";
 
   load_board("easy.dat", board);
   if (solve_board(board)) {
@@ -119,30 +119,7 @@ int main() {
   }
   cout << '\n';
 
-  // // write more tests
-
-  // Test for failures
-  load_board("easy-fail.dat", board);
-  if (solve_board(board)) {
-    cout << "The 'easy-fail' board has a solution:\n";
-    display_board(board);
-  } else {
-    cout << "A solution cannot be found.\n";
-  }
-  cout << '\n';
-
-  load_board("medium-fail.dat", board);
-  if (solve_board(board)) {
-    cout << "The 'medium-fail' board has a solution:\n";
-    display_board(board);
-  } else {
-    cout << "A solution cannot be found.\n";
-  }
-  cout << '\n';
-
-  cout << "=================== Question 5 ===================\n\n";
-
-  // write more tests
+  cout << "========== Question 5: Determing speeds to resolve boards ==========\n\n";
 
   double mystery1_duration=0, mystery2_duration=0, mystery3_duration=0;
 

@@ -1,0 +1,13 @@
+# Ignore all object files
+*.o
+
+# Ignore executable
+sudoku
+
+# Ignore findings
+findings.txt
+
+# Ignore random sudoku files
+easy-fail.dat
+medium-fail.dat
+mystery2.dat
