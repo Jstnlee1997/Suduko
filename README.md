@@ -8,15 +8,15 @@
 5. Run the program executable: `./suduoku`
 
 ## "easy.dat" Format
-...1.83..
-24..5....
-..8....61
-..4..9..3
-.6.....2.
-3..8..1..
-17....9..
-....1..52
-..27.4...
+...1.83..  
+24..5....  
+..8....61  
+..4..9..3  
+.6.....2.  
+3..8..1..  
+17....9..  
+....1..52  
+..27.4...  
 
 1. Any empty cell is represented with a "."
 2. Ensure that there are a total of 9x9 cells
